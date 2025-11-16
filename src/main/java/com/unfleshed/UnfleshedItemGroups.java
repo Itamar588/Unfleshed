@@ -15,10 +15,10 @@ public class UnfleshedItemGroups {
             Registries.ITEM_GROUP,
             new Identifier(Unfleshed.MOD_ID, "unfleshed"),
             FabricItemGroup.builder()
-                    .icon(() -> new ItemStack(ModItems.SURGICAL_KNIFE)) // icon in creative menu
+                    .icon(() -> new ItemStack(ModItems.SURGICAL_KNIFE))
                     .displayName(Text.literal("Unfleshed"))
                     .entries((context, entries) -> {
-                        entries.add(ModItems.SURGICAL_KNIFE); // items go here
+                        entries.add(ModItems.SURGICAL_KNIFE);
                     })
                     .build()
     );

@@ -10,8 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.Registries;
 
-import javax.tools.Tool;
-
 public class ModItems {
 
     public static final Item SURGICAL_KNIFE = new SurgicalKnifeItem(ToolMaterials.IRON, -1, -1.5f,new FabricItemSettings().maxCount(1));
