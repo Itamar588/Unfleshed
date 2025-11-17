@@ -19,6 +19,7 @@ public class UnfleshedItemGroups {
                     .displayName(Text.literal("Unfleshed"))
                     .entries((context, entries) -> {
                         entries.add(ModItems.SURGICAL_KNIFE);
+                        entries.add(ModItems.HUMAN_EYES);
                     })
                     .build()
     );

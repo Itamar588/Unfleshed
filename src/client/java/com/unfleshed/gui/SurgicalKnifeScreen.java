@@ -21,8 +21,4 @@ public class SurgicalKnifeScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Cancel"), b -> close()).dimensions(cx - 50, cy + 50, 100, 20).build());
     }
 
-    @Override
-    public boolean shouldPause() {
-        return false;
-    }
 }
