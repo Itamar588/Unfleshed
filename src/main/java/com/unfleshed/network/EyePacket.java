@@ -27,7 +27,11 @@ public class EyePacket {
                 eyes.setState(EyesComponent.EyeState.BLIND);
                 MyComponents.EYES.sync(player);
             }
-            case ARCANE -> player.sendMessage(Text.literal("Arcane eyes!"), false);
+            case ARCANE -> {
+                player.getInventory().insertStack(new ItemStack(ModItems.ARCANE_EYES));
+                eyes.setState(EyesComponent.EyeState.BLIND);
+                MyComponents.EYES.sync(player);
+            }
             case BLIND -> player.sendMessage(Text.literal("You attempt to cut your eyes, but all you have are empty eye sockets."), false);
         }
     }

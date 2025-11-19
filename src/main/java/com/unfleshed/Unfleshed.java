@@ -4,8 +4,12 @@ import com.unfleshed.items.ModItems;
 import com.unfleshed.network.EyePacket;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.unfleshed.application.ApplicationManager;
 
 
 public class Unfleshed implements ModInitializer {
@@ -15,6 +19,9 @@ public class Unfleshed implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+                    for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) ApplicationManager.Apply(player);
+        });
         ModItems.registerItems();
         UnfleshedItemGroups.registerItemGroups();
 		LOGGER.info("Hello Fabric world!");

@@ -20,6 +20,7 @@ public class UnfleshedItemGroups {
                     .entries((context, entries) -> {
                         entries.add(ModItems.SURGICAL_KNIFE);
                         entries.add(ModItems.HUMAN_EYES);
+                        entries.add(ModItems.ARCANE_EYES);
                     })
                     .build()
     );
