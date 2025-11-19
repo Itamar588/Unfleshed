@@ -7,4 +7,5 @@ import net.minecraft.util.Identifier;
 
 public class ModPackets {
     public static final Identifier OPEN_SURGICAL_GUI = new Identifier("unfleshed", "open_surgical_gui");
+    public static final Identifier SURGICAL_KNIFE_EYES = new Identifier("unfleshed", "surgical_knife_eyes");
 }

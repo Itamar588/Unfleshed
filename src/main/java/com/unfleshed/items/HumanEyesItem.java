@@ -3,22 +3,49 @@ package com.unfleshed.items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.entity.player.PlayerEntity;
+import com.unfleshed.Components.MyComponents;
+import com.unfleshed.Components.EyesComponent;
+
 public class HumanEyesItem extends Item {
 
-    public HumanEyesItem(Settings settings){
+    public HumanEyesItem(Settings settings) {
         super(settings);
-    };
+    }
+
+    ;
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
-            System.out.println("HumanEyesItem right-clicked!");
+            EyesComponent eyes = MyComponents.EYES.get(user);
+            if (eyes.getState() == EyesComponent.EyeState.BLIND) {
+                // Try to find exactly one Human Eyes item
+                boolean removed = false;
+                for (int i = 0; i < user.getInventory().size(); i++) {
+                    ItemStack stack = user.getInventory().getStack(i);
+                    if (stack.isOf(ModItems.HUMAN_EYES) && stack.getCount() > 0) {
+                        stack.decrement(1); // remove exactly one
+                        removed = true;
+                        break;
+                    }
+                }
+
+                if (removed) {
+                    eyes.setState(EyesComponent.EyeState.HUMAN);
+                    MyComponents.EYES.sync(user);
+                    user.sendMessage(Text.literal("You reattach your human eyes!"), false);
+                } else {
+                    user.sendMessage(Text.literal("You don’t have any Human Eyes to reattach!"), false);
+                }
+            } else {
+                user.sendMessage(Text.literal("Can't reattach eyes! You already have " + eyes.getState() + " eyes!"), false);
+            }
         }
         return TypedActionResult.success(user.getStackInHand(hand));
     }
-
 }
