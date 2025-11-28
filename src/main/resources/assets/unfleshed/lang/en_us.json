@@ -1,6 +1,14 @@
 {
+
   "item.unfleshed.surgical_knife": "Surgical Knife",
   "item.unfleshed.human_eyes": "Human Eyes",
   "item.unfleshed.arcane_eyes": "Arcane Eyes",
-  "itemGroup.unfleshed.unfleshed": "Unfleshed"
+
+
+
+  "itemGroup.unfleshed.unfleshed": "Unfleshed",
+
+  "death.attack.dismemberment": "%1$s was brutally dismembered.",
+  "death.attack.dismemberment.player": "%1$s was dismembered by %2$s."
+
 }

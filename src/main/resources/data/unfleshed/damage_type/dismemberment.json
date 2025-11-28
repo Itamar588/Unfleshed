@@ -1,0 +1,8 @@
+{
+  "message_id": "dismemberment",
+  "scaling": "when_caused_by_living_non_player",
+  "exhaustion": 0.1,
+  "bypasses_armor": true,
+  "bypasses_shield": true,
+  "bypasses_resistance": true
+}

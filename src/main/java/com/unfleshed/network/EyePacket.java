@@ -2,10 +2,13 @@ package com.unfleshed.network;
 
 import com.unfleshed.Components.EyesComponent;
 import com.unfleshed.Components.MyComponents;
+import com.unfleshed.damage.ModDamageTypes;
 import com.unfleshed.items.ModItems;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 
 public class EyePacket {
@@ -15,7 +18,10 @@ public class EyePacket {
             server.execute(() -> handleEyesButton(player));
         });
     }
+    private static void DismembermentEffects(PlayerEntity player) {
+        player.damage(ModDamageTypes.dismemberment(player.getWorld()), 7.0F);
 
+    }
     private static void handleEyesButton(ServerPlayerEntity player) {
         EyesComponent eyes = MyComponents.EYES.get(player);
         if (eyes == null) return; // safety check
@@ -26,6 +32,8 @@ public class EyePacket {
                 player.getInventory().insertStack(new ItemStack(ModItems.HUMAN_EYES));
                 eyes.setState(EyesComponent.EyeState.BLIND);
                 MyComponents.EYES.sync(player);
+
+
             }
             case ARCANE -> {
                 player.getInventory().insertStack(new ItemStack(ModItems.ARCANE_EYES));

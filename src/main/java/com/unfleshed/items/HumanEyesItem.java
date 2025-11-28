@@ -38,7 +38,7 @@ public class HumanEyesItem extends Item {
                 if (removed) {
                     eyes.setState(EyesComponent.EyeState.HUMAN);
                     MyComponents.EYES.sync(user);
-                    user.sendMessage(Text.literal("You reattach your human eyes!"), false);
+                    user.sendMessage(Text.literal("You attach a pair of Human eyes to your Eye sockets!"), false);
                 } else {
                     user.sendMessage(Text.literal("You don’t have any Human Eyes to reattach!"), false);
                 }

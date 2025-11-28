@@ -37,7 +37,7 @@ public class ArcaneEyesItem extends Item {
                 if (removed) {
                     eyes.setState(EyesComponent.EyeState.ARCANE);
                     MyComponents.EYES.sync(user);
-                    user.sendMessage(Text.literal("You reattach your Arcane eyes!"), false);
+                    user.sendMessage(Text.literal("You attach a pair of Arcane eyes to your Eye sockets!"), false);
                 } else {
                     user.sendMessage(Text.literal("You don’t have any Arcane Eyes to reattach!"), false);
                 }

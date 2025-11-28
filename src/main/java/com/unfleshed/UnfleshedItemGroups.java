@@ -1,5 +1,6 @@
 package com.unfleshed;
 
+import com.unfleshed.block.ModBlocks;
 import com.unfleshed.items.ModItems;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
@@ -21,6 +22,7 @@ public class UnfleshedItemGroups {
                         entries.add(ModItems.SURGICAL_KNIFE);
                         entries.add(ModItems.HUMAN_EYES);
                         entries.add(ModItems.ARCANE_EYES);
+                        entries.add(ModBlocks.SANGUIS_VELUM);
                     })
                     .build()
     );

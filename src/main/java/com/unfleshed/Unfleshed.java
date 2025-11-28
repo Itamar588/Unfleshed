@@ -1,5 +1,7 @@
 package com.unfleshed;
 
+import com.unfleshed.block.ModBlocks;
+import com.unfleshed.events.PlayerCloneEvents;
 import com.unfleshed.items.ModItems;
 import com.unfleshed.network.EyePacket;
 import net.fabricmc.api.ModInitializer;
@@ -22,6 +24,8 @@ public class Unfleshed implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) ApplicationManager.Apply(player);
         });
+        ModBlocks.registerModBlocks();
+        PlayerCloneEvents.register();
         ModItems.registerItems();
         UnfleshedItemGroups.registerItemGroups();
 		LOGGER.info("Hello Fabric world!");

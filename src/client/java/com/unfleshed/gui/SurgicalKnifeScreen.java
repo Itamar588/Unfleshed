@@ -27,6 +27,7 @@ public class SurgicalKnifeScreen extends Screen {
             PacketByteBuf buf = PacketByteBufs.create();
             ClientPlayNetworking.send(ModPackets.SURGICAL_KNIFE_EYES, buf);
             close();
+
         }).dimensions(cx - 50, cy - 40, 100, 20).build());
 
         // Tongue button (still placeholder)
@@ -39,6 +40,7 @@ public class SurgicalKnifeScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Fingers"), b -> {
             System.out.println("Fingers");
             close();
+
         }).dimensions(cx - 50, cy + 20, 100, 20).build());
 
         // Cancel button

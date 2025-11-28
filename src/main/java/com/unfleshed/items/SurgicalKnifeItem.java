@@ -23,7 +23,7 @@ public class SurgicalKnifeItem extends SwordItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
-            ServerPlayNetworking.send((ServerPlayerEntity) user, ModPackets.OPEN_SURGICAL_GUI, PacketByteBufs.create());
+            ServerPlayNetworking.send((ServerPlayerEntity) user, ModPackets.OPEN_SURGICAL_KNIFE_GUI, PacketByteBufs.create());
         }
         return TypedActionResult.success(user.getStackInHand(hand));
     }

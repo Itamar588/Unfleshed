@@ -1,9 +1,11 @@
 package com.unfleshed.application;
 
 import com.unfleshed.Components.MyComponents;
+import com.unfleshed.damage.ModDamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.RegistryKeys;
 
 public class EyeApplicationManager
 {
@@ -19,7 +21,8 @@ public class EyeApplicationManager
                         false                    // show icon
                 ));
             }
-            case ARCANE -> {}//TODO reveal invisible players nearby
+            case ARCANE -> {
+            }//TODO reveal invisible players nearby
         }
     }
 }
