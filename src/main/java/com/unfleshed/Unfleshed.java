@@ -1,6 +1,8 @@
 package com.unfleshed;
 
 import com.unfleshed.block.ModBlocks;
+import com.unfleshed.block.SanguisVelumBlockEntity;
+import com.unfleshed.events.BloodlettingHandler;
 import com.unfleshed.events.PlayerCloneEvents;
 import com.unfleshed.items.ModItems;
 import com.unfleshed.network.EyePacket;
@@ -30,5 +32,6 @@ public class Unfleshed implements ModInitializer {
         UnfleshedItemGroups.registerItemGroups();
 		LOGGER.info("Hello Fabric world!");
         EyePacket.register();
+        BloodlettingHandler.init();
 	}
 }
