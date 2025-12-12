@@ -11,7 +11,6 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.world.World;
 import org.joml.Quaternionf;
 
 public class SanguisVelumBlockEntityRenderer implements BlockEntityRenderer<SanguisVelumBlockEntity> {
@@ -26,12 +25,17 @@ public class SanguisVelumBlockEntityRenderer implements BlockEntityRenderer<Sang
         ItemStack stack = blockEntity.getStoredItem();
         if (stack == null) stack = new ItemStack(Items.AIR);
 
-        World world = blockEntity.getWorld();
-        matrices.push();
-        matrices.translate(0.5, 1.2, 0.5);
+        float floatingOffset = 0f;
+        int phase = blockEntity.getRitualPhase();
+        float ticks = blockEntity.getRitualTicks();
 
-        float time = world != null ? world.getTime() + tickDelta : tickDelta;
-        float angleRadians = (float) Math.toRadians(time * 4f);
+        if (phase == 1) floatingOffset = Math.min(0.5f, 0.5f * (ticks / blockEntity.getRitualDuration())); // rising
+        if (phase == 2) floatingOffset = 0.5f * (1 - ticks / (blockEntity.getRitualDuration() / 2f)); // lowering
+
+        matrices.push();
+        matrices.translate(0.5, 1.2 + floatingOffset, 0.5);
+
+        float angleRadians = (float) Math.toRadians((blockEntity.getWorld() != null ? blockEntity.getWorld().getTime() : 0) + tickDelta) * 4f;
         matrices.multiply(new Quaternionf().rotateY(angleRadians));
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(
@@ -41,7 +45,7 @@ public class SanguisVelumBlockEntityRenderer implements BlockEntityRenderer<Sang
                 OverlayTexture.DEFAULT_UV,
                 matrices,
                 vertexConsumers,
-                world,
+                blockEntity.getWorld(),
                 0
         );
 

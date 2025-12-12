@@ -23,6 +23,8 @@ public class UnfleshedItemGroups {
                         entries.add(ModItems.HUMAN_EYES);
                         entries.add(ModItems.ARCANE_EYES);
                         entries.add(ModBlocks.SANGUIS_VELUM);
+                        entries.add(ModItems.HEMOCLAST);
+                        entries.add(ModItems.HEMOCRYSTAL);
                     })
                     .build()
     );

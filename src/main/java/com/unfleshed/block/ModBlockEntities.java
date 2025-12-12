@@ -15,6 +15,6 @@ public class ModBlockEntities {
             );
 
     public static void registerBlockEntities() {
-        // static init; nothing else needed
+        // Nothing extra needed
     }
 }

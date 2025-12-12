@@ -14,6 +14,7 @@ public class ModItems {
     public static final Item HUMAN_EYES = new HumanEyesItem(new FabricItemSettings());
     public static final Item ARCANE_EYES = new ArcaneEyesItem(new FabricItemSettings());
     public  static final Item HEMOCLAST = new HemoclastItem(ToolMaterials.STONE, 2, -2f,new FabricItemSettings().maxCount(1).maxDamage(200));
+    public static final Item HEMOCRYSTAL = new HemoCrystalItem(new FabricItemSettings());
 
 
     public static void registerItems() {
@@ -21,6 +22,7 @@ public class ModItems {
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "human_eyes"), HUMAN_EYES);
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "arcane_eyes"), ARCANE_EYES);
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "hemoclast"), HEMOCLAST);
+        Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "hemocrystal"), HEMOCRYSTAL);
 
     }
 }

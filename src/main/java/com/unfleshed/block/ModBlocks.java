@@ -27,6 +27,6 @@ public class ModBlocks {
     }
 
     public static void registerModBlocks() {
-        // All registration handled in static fields
+        // handled via static fields
     }
 }

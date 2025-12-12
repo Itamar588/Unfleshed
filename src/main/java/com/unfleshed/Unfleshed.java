@@ -6,6 +6,7 @@ import com.unfleshed.events.BloodlettingHandler;
 import com.unfleshed.events.PlayerCloneEvents;
 import com.unfleshed.items.ModItems;
 import com.unfleshed.network.EyePacket;
+import com.unfleshed.particle.ModParticles;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -23,6 +24,7 @@ public class Unfleshed implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        ModParticles.registerParticles();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) ApplicationManager.Apply(player);
         });

@@ -5,6 +5,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +32,7 @@ public class SanguisVelumBlock extends Block implements BlockEntityProvider {
 
     static {
         SPECIAL_ITEMS.add(ModItems.HUMAN_EYES);
-        SPECIAL_ITEMS.add(net.minecraft.item.Items.AMETHYST_SHARD);
+        SPECIAL_ITEMS.add(Items.AMETHYST_SHARD);
     }
 
     private static final VoxelShape SHAPE = VoxelShapes.union(
@@ -54,7 +57,6 @@ public class SanguisVelumBlock extends Block implements BlockEntityProvider {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
-        // Only react to main hand
         if (hand != Hand.MAIN_HAND) return ActionResult.PASS;
 
         ItemStack held = player.getStackInHand(hand);
@@ -63,47 +65,38 @@ public class SanguisVelumBlock extends Block implements BlockEntityProvider {
 
         ItemStack current = entity.getStoredItem();
 
-        System.out.println("[SanguisVelumBlock] Player clicked. Held: " + held + ", Block holds: " + current);
-
         // Empty hand -> take stored item
         if (held.isEmpty() && !current.isEmpty()) {
             if (!world.isClient) {
                 player.setStackInHand(hand, current.copy());
                 entity.setStoredItem(new ItemStack(Items.AIR));
-                System.out.println("[SanguisVelumBlock] Gave stored item to player and cleared block.");
             }
             return ActionResult.SUCCESS;
         }
 
-        // Special item logic
         if (SPECIAL_ITEMS.contains(held.getItem())) {
-
-            // Do nothing if same item
-            if (ItemStack.areItemsEqual(held, current)) {
-                System.out.println("[SanguisVelumBlock] Clicked with same item, doing nothing.");
-                return ActionResult.PASS;
-            }
-
             if (!world.isClient) {
                 ItemStack previous = current.copy();
                 entity.setStoredItem(held.copy());
 
-                if (!previous.isEmpty()) {
-                    player.setStackInHand(hand, previous);
-                    System.out.println("[SanguisVelumBlock] Swapped block item with player item.");
-                } else {
-                    player.setStackInHand(hand, new ItemStack(Items.AIR));
-                    System.out.println("[SanguisVelumBlock] No previous item, removing held item from player.");
-                }
+                if (!previous.isEmpty()) player.setStackInHand(hand, previous);
+                else player.setStackInHand(hand, new ItemStack(Items.AIR));
 
                 player.sendMessage(Text.literal("The velum reacts to your offering!"), true);
             }
-
             return ActionResult.SUCCESS;
         }
 
-        // Non-special items do nothing
-        System.out.println("[SanguisVelumBlock] Player clicked with non-special item. Doing nothing.");
         return ActionResult.PASS;
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (world.isClient) return null;
+        if (type != ModBlockEntities.SANGUIS_VELUM) return null;
+
+        return (w, pos, st, be) -> {
+            if (be instanceof SanguisVelumBlockEntity sv) sv.tickServer();
+        };
     }
 }
