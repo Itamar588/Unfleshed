@@ -1,5 +1,6 @@
 package com.unfleshed.items;
 
+import com.unfleshed.damage.ModDamageTypes;
 import com.unfleshed.effect.ModEffects;
 import com.unfleshed.network.ModPackets;
 import net.minecraft.entity.Entity;
@@ -12,6 +13,9 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.util.math.Box;
 
@@ -19,7 +23,7 @@ import java.util.*;
 
 public class OculonItem extends SwordItem {
     private static final Map<UUID, Set<Integer>> glowingEntitiesPerPlayer = new HashMap<>();
-    private static final double GLOW_RADIUS = 15.0;
+    private static final double GLOW_RADIUS = 30.0;
     private static final int GLOW_DURATION_TICKS = 2; // short, will refresh every tick
 
     // Track which players are holding the Oculon
@@ -140,4 +144,110 @@ public class OculonItem extends SwordItem {
         return super.postHit(stack, target, attacker);
     }
 
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (player.getItemCooldownManager().isCoolingDown(this)) {
+            return TypedActionResult.fail(stack);
+        }
+
+        if (!world.isClient) {
+            shootLaser(world, player);
+            player.getItemCooldownManager().set(this, 15 * 20); // 15s cooldown
+        }
+
+        return TypedActionResult.success(stack);
+    }
+
+
+    private void shootLaser(World world, PlayerEntity player) {
+        // Start position at player's chest level
+        Vec3d start = player.getPos().add(0, player.getStandingEyeHeight() * 0.7, 0);
+
+        // Calculate end position (30 blocks in the direction player is looking)
+        float reachDistance = 40.0f;  // 30 blocks max distance
+        Vec3d look = player.getRotationVec(1.0F);
+        Vec3d maxEnd = start.add(look.multiply(reachDistance));
+
+        // Raycast to find hit position
+        HitResult hit = world.raycast(new RaycastContext(
+                start,
+                maxEnd,  // Use maxEnd as the end point for the raycast
+                RaycastContext.ShapeType.COLLIDER,
+                RaycastContext.FluidHandling.NONE,
+                player
+        ));
+
+        // Use the hit position if we hit something, otherwise use maxEnd
+        Vec3d end = hit.getType() != HitResult.Type.MISS ? hit.getPos() : maxEnd;
+
+        // Send packet to show laser on all clients
+        if (!world.isClient) {
+            ModPackets.sendLaserLine(world, start, end);
+        }
+
+        // Rest of your effect application code...
+        if (!world.isClient) {
+            // Create a box that encompasses the laser's path
+            Box laserBox = new Box(
+                    Math.min(start.x, end.x) - 1.0,
+                    Math.min(start.y, end.y) - 1.0,
+                    Math.min(start.z, end.z) - 1.0,
+                    Math.max(start.x, end.x) + 1.0,
+                    Math.max(start.y, end.y) + 1.0,
+                    Math.max(start.z, end.z) + 1.0
+            );
+
+            // Check for entities in the laser's path
+            for (Entity entity : world.getOtherEntities(player, laserBox)) {
+                if (!(entity instanceof LivingEntity livingEntity)) continue;
+
+                Vec3d entityPos = livingEntity.getPos();
+                Vec3d beamDir = end.subtract(start).normalize();
+                Vec3d toEntity = entityPos.subtract(start);
+                double projection = toEntity.dotProduct(beamDir);
+
+                projection = Math.max(0, Math.min(projection, start.distanceTo(end)));
+                Vec3d closestPoint = start.add(beamDir.multiply(projection));
+                double distanceToBeam = entityPos.distanceTo(closestPoint);
+
+                if (distanceToBeam <= 2.0) {
+                    StatusEffectInstance current = livingEntity.getStatusEffect(ModEffects.GAZE);
+                    int stacks = current != null ? current.getAmplifier() + 1 : 0;
+
+                    float damage = 5f + stacks * 3f;
+                    livingEntity.damage(ModDamageTypes.dismemberment(world), damage);
+
+                    if (current != null) livingEntity.removeStatusEffect(ModEffects.GAZE);
+                }
+            }
+        }
+    }
+
+
+
+    private boolean isEntityInLaserPath(Entity entity, Vec3d start, Vec3d end) {
+        // Simple distance check - for more accuracy, you might want to implement
+        // a ray-entity intersection test
+        Vec3d entityPos = entity.getPos();
+        double distance = entityPos.distanceTo(start);
+        double totalDistance = start.distanceTo(end);
+
+        // If entity is beyond the laser's range, skip
+        if (distance > totalDistance) return false;
+
+        // Check if entity is close enough to the line
+        Vec3d lineDir = end.subtract(start).normalize();
+        Vec3d toEntity = entityPos.subtract(start);
+        double projection = toEntity.dotProduct(lineDir);
+        Vec3d closestPoint = start.add(lineDir.multiply(projection));
+        double distanceToLine = entityPos.distanceTo(closestPoint);
+
+        return distanceToLine < 1.0; // 1 block radius around the laser
+    }
 }
+
+
+
+
