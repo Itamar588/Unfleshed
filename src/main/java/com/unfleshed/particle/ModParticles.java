@@ -13,6 +13,11 @@ public class ModParticles {
             new Identifier("unfleshed", "blood"),
             FabricParticleTypes.simple()
     );
+    public static final DefaultParticleType GAZE = Registry.register(
+            Registries.PARTICLE_TYPE,
+            new Identifier("unfleshed","gaze"),
+            FabricParticleTypes.simple()
+    );
 
     public static void registerParticles() {
         // just call this in Unfleshed.java

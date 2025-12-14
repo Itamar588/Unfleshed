@@ -23,8 +23,9 @@ public class BloodParticle extends SpriteBillboardParticle {
 
     @Override
     public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
     }
+
 
     public static class Factory implements ParticleFactory<DefaultParticleType> {
         private final SpriteProvider spriteProvider;

@@ -25,7 +25,7 @@ public class SurgicalKnifeScreen extends Screen {
         // Eyes button
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Eyes"), b -> {
             PacketByteBuf buf = PacketByteBufs.create();
-            ClientPlayNetworking.send(ModPackets.SURGICAL_KNIFE_EYES, buf);
+            ClientPlayNetworking.send(ModPackets.OPEN_SURGICAL_KNIFE_GUI, buf);
             close();
 
         }).dimensions(cx - 50, cy - 40, 100, 20).build());

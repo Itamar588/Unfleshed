@@ -25,6 +25,7 @@ public class UnfleshedItemGroups {
                         entries.add(ModBlocks.SANGUIS_VELUM);
                         entries.add(ModItems.HEMOCLAST);
                         entries.add(ModItems.HEMOCRYSTAL);
+                        entries.add(ModItems.OCULON);
                     })
                     .build()
     );

@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 public class EyePacket {
 
     public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(ModPackets.SURGICAL_KNIFE_EYES, (server, player, handler, buf, responseSender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(ModPackets.EYE_PACKET, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> handleEyesButton(player));
         });
     }

@@ -2,6 +2,7 @@ package com.unfleshed;
 
 import com.unfleshed.block.ModBlocks;
 import com.unfleshed.block.SanguisVelumBlockEntity;
+import com.unfleshed.effect.ModEffects;
 import com.unfleshed.events.BloodlettingHandler;
 import com.unfleshed.events.PlayerCloneEvents;
 import com.unfleshed.items.ModItems;
@@ -25,6 +26,7 @@ public class Unfleshed implements ModInitializer {
 	@Override
 	public void onInitialize() {
         ModParticles.registerParticles();
+        ModEffects.registerEffects();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) ApplicationManager.Apply(player);
         });

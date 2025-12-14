@@ -1,8 +1,10 @@
 package com.unfleshed.items;
 
 import com.unfleshed.Unfleshed;
+import com.unfleshed.material.FleshToolMaterial;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
@@ -15,6 +17,7 @@ public class ModItems {
     public static final Item ARCANE_EYES = new ArcaneEyesItem(new FabricItemSettings());
     public  static final Item HEMOCLAST = new HemoclastItem(ToolMaterials.STONE, 2, -2f,new FabricItemSettings().maxCount(1).maxDamage(200));
     public static final Item HEMOCRYSTAL = new HemoCrystalItem(new FabricItemSettings());
+    public static final Item OCULON = new OculonItem(FleshToolMaterial.INSTANCE, 7, -2.6f, new FabricItemSettings().maxDamage(3000));
 
 
     public static void registerItems() {
@@ -23,6 +26,7 @@ public class ModItems {
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "arcane_eyes"), ARCANE_EYES);
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "hemoclast"), HEMOCLAST);
         Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "hemocrystal"), HEMOCRYSTAL);
+        Registry.register(Registries.ITEM, new Identifier(Unfleshed.MOD_ID, "oculon"), OCULON);
 
     }
 }
